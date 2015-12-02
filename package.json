@@ -1,6 +1,6 @@
 {
   "name": "deku-news-ticker",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "News ticker component for deku",
   "main": "dist/index.js",
   "scripts": {

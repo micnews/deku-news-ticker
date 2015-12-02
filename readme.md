@@ -1,0 +1,2 @@
+# deku-news-ticker
+`<NewsTicker>`

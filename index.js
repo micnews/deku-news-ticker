@@ -13,9 +13,9 @@ export default {
     </div>);
   },
   afterMount: function (component, el, setState) {
-    var slider = el.querySelector('.news-ticker__slider');
+    const slider = el.querySelector('.news-ticker__slider');
 
-    var interval = setInterval(function () {
+    const interval = setInterval(function () {
       slider.style.transition = '';
       slider.style.left = -slider.firstChild.offsetWidth + 'px';
 
@@ -31,7 +31,7 @@ export default {
     });
   },
   beforeUnmount: function (component, el) {
-    var {state} = component;
+    const {state} = component;
     window.clearInterval(state.interval);
   }
 };

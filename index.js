@@ -12,10 +12,10 @@ export default {
       </span>
     </div>);
   },
-  afterMount: function (component, el) {
+  afterMount: function (component, el, setState) {
     var slider = el.querySelector('.news-ticker__slider');
 
-    setInterval(function () {
+    var interval = setInterval(function () {
       slider.style.transition = '';
       slider.style.left = -slider.firstChild.offsetWidth + 'px';
 
@@ -25,5 +25,13 @@ export default {
         slider.style.left = '0px';
       }, 400);
     }, 1000 * 3);
+
+    setState({
+      interval: interval
+    });
+  },
+  beforeUnmount: function (component, el) {
+    var {state} = component;
+    window.clearInterval(state.interval);
   }
 };

@@ -46,6 +46,7 @@
   padding-bottom: 16px;
   position: relative;
   vertical-align: middle;
+  transition: left 0.4s ease;
 }
 
 .news-ticker__slider > * {

@@ -11,5 +11,19 @@ export default {
         {props.children}
       </span>
     </div>);
+  },
+  afterRender: function (component, el) {
+    var slider = el.querySelector('.news-ticker__slider');
+
+    setInterval(function () {
+      slider.style.transition = '';
+      slider.style.left = -slider.firstChild.offsetWidth + 'px';
+
+      setTimeout(function () {
+        slider.style.transition = 'none';
+        slider.appendChild(slider.firstChild);
+        slider.style.left = '0px';
+      }, 400);
+    }, 1000 * 3);
   }
 };

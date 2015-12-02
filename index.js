@@ -12,7 +12,7 @@ export default {
       </span>
     </div>);
   },
-  afterRender: function (component, el) {
+  afterMount: function (component, el) {
     var slider = el.querySelector('.news-ticker__slider');
 
     setInterval(function () {

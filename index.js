@@ -4,26 +4,37 @@
 import element from 'magic-virtual-element';
 
 export default {
-  render: function ({ props }) {
+  render: function (component) {
+    const {state, props} = component;
+    let style;
+    if (state.offset) {
+      style = 'left: -' + state.offset + 'px;';
+    } else {
+      style = 'transition: none; left: 0;';
+    }
+
     return (<div class='news-ticker'>
       <span class='news-ticker__label'>{ props.label || 'The Latest News'}</span>
-      <span class='news-ticker__slider'>
+      <span class='news-ticker__slider' style={style}>
         {props.children}
       </span>
     </div>);
   },
   afterMount: function (component, el, setState) {
+    const {props} = component;
     const slider = el.querySelector('.news-ticker__slider');
 
-    const interval = setInterval(function () {
-      slider.style.transition = '';
-      slider.style.left = -slider.firstChild.offsetWidth + 'px';
+    slider.addEventListener('transitionend', function () {
+      props.children.push(props.children.shift());
+      setState({
+        offset: false
+      });
+    });
 
-      setTimeout(function () {
-        slider.style.transition = 'none';
-        slider.appendChild(slider.firstChild);
-        slider.style.left = '0px';
-      }, 400);
+    const interval = setInterval(function () {
+      setState({
+        offset: slider.firstChild.offsetWidth
+      });
     }, 1000 * 3);
 
     setState({

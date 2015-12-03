@@ -3,35 +3,60 @@
 
 import element from 'magic-virtual-element';
 
+let intervals = {};
+let hoverStates = {};
+
 export default {
-  render: function ({ props }) {
+  render: function (component) {
+    const {state, props} = component;
+    let style;
+    if (state.offset) {
+      style = 'left: -' + state.offset + 'px;';
+    } else {
+      style = 'transition: none; left: 0;';
+    }
+
+    function hover () {
+      hoverStates[component.id] = true;
+    }
+
+    function blur () {
+      hoverStates[component.id] = false;
+    }
+
     return (<div class='news-ticker'>
       <span class='news-ticker__label'>{ props.label || 'The Latest News'}</span>
-      <span class='news-ticker__slider'>
+      <span class='news-ticker__slider' style={style} onMouseOver={hover} onMouseOut={blur}>
         {props.children}
       </span>
     </div>);
   },
   afterMount: function (component, el, setState) {
+    const {props} = component;
     const slider = el.querySelector('.news-ticker__slider');
 
-    const interval = setInterval(function () {
-      slider.style.transition = '';
-      slider.style.left = -slider.firstChild.offsetWidth + 'px';
+    slider.addEventListener('transitionend', function (event) {
+      if (event.target !== slider) {
+        return;
+      }
 
-      setTimeout(function () {
-        slider.style.transition = 'none';
-        slider.appendChild(slider.firstChild);
-        slider.style.left = '0px';
-      }, 400);
-    }, 1000 * 3);
-
-    setState({
-      interval: interval
+      props.children.push(props.children.shift());
+      setState({
+        offset: false
+      });
     });
+
+    intervals[component.id] = setInterval(function () {
+      if (!hoverStates[component.id]) {
+        setState({
+          offset: slider.firstChild.offsetWidth
+        });
+      }
+    }, 1000 * 3);
   },
   beforeUnmount: function (component, el) {
-    const {state} = component;
-    window.clearInterval(state.interval);
+    window.clearInterval(intervals[component.id]);
+    delete intervals[component.id];
+    delete hoverStates[component.id];
   }
 };

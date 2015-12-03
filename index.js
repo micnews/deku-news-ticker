@@ -4,6 +4,7 @@
 import element from 'magic-virtual-element';
 
 let intervals = {};
+let hoverStates = {};
 
 export default {
   render: function (component) {
@@ -15,9 +16,17 @@ export default {
       style = 'transition: none; left: 0;';
     }
 
+    function hover () {
+      hoverStates[component.id] = true;
+    }
+
+    function blur () {
+      hoverStates[component.id] = false;
+    }
+
     return (<div class='news-ticker'>
       <span class='news-ticker__label'>{ props.label || 'The Latest News'}</span>
-      <span class='news-ticker__slider' style={style}>
+      <span class='news-ticker__slider' style={style} onMouseOver={hover} onMouseOut={blur}>
         {props.children}
       </span>
     </div>);
@@ -38,9 +47,11 @@ export default {
     });
 
     intervals[component.id] = setInterval(function () {
-      setState({
-        offset: slider.firstChild.offsetWidth
-      });
+      if (!hoverStates[component.id]) {
+        setState({
+          offset: slider.firstChild.offsetWidth
+        });
+      }
     }, 1000 * 3);
   },
   beforeUnmount: function (component, el) {

@@ -3,6 +3,8 @@
 
 import element from 'magic-virtual-element';
 
+let intervals = {};
+
 export default {
   render: function (component) {
     const {state, props} = component;
@@ -31,13 +33,14 @@ export default {
       });
     });
 
-    component.interval = setInterval(function () {
+    intervals[component.id] = setInterval(function () {
       setState({
         offset: slider.firstChild.offsetWidth
       });
     }, 1000 * 3);
   },
   beforeUnmount: function (component, el) {
-    window.clearInterval(component.interval);
+    window.clearInterval(intervals[component.id]);
+    delete intervals[component.id];
   }
 };

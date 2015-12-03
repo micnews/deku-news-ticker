@@ -57,5 +57,6 @@ export default {
   beforeUnmount: function (component, el) {
     window.clearInterval(intervals[component.id]);
     delete intervals[component.id];
+    delete hoverStates[component.id];
   }
 };

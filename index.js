@@ -31,18 +31,13 @@ export default {
       });
     });
 
-    const interval = setInterval(function () {
+    component.interval = setInterval(function () {
       setState({
         offset: slider.firstChild.offsetWidth
       });
     }, 1000 * 3);
-
-    setState({
-      interval: interval
-    });
   },
   beforeUnmount: function (component, el) {
-    const {state} = component;
-    window.clearInterval(state.interval);
+    window.clearInterval(component.interval);
   }
 };

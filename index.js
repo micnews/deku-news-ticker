@@ -26,7 +26,11 @@ export default {
     const {props} = component;
     const slider = el.querySelector('.news-ticker__slider');
 
-    slider.addEventListener('transitionend', function () {
+    slider.addEventListener('transitionend', function (event) {
+      if (event.target !== slider) {
+        return;
+      }
+
       props.children.push(props.children.shift());
       setState({
         offset: false

@@ -7,6 +7,9 @@ let intervals = {};
 let hoverStates = {};
 
 export default {
+  defaultProps: {
+    interval: 1000 * 3
+  },
   render: function (component) {
     const {state, props} = component;
     let style;
@@ -52,7 +55,7 @@ export default {
           offset: slider.firstChild.offsetWidth
         });
       }
-    }, 1000 * 3);
+    }, props.interval);
   },
   beforeUnmount: function (component, el) {
     window.clearInterval(intervals[component.id]);

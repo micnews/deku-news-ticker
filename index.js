@@ -16,6 +16,7 @@ export default {
     if (state.offset) {
       style = 'left: -' + state.offset + 'px;';
     } else {
+      props.children.push(props.children.shift());
       style = 'transition: none; left: 0;';
     }
 
@@ -43,7 +44,6 @@ export default {
         return;
       }
 
-      props.children.push(props.children.shift());
       setState({
         offset: false
       });

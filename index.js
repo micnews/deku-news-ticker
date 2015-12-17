@@ -15,7 +15,7 @@ export default {
     let style;
     if (state.offset) {
       style = 'left: -' + state.offset + 'px;';
-    } else {
+    } else if (state.offset === false) {
       props.children.push(props.children.shift());
       style = 'transition: none; left: 0;';
     }
